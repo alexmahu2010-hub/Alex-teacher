@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>TeachList</title>
+
+  <link rel="icon" type="image/png" href="logo.png" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="header">
+    <div class="brand" onclick="showPage('intro')" role="button" tabindex="0">
+      <img id="headerLogo" src="logo.png" alt="TeachList logo" class="site-logo" />
+      <div class="logo-text">Teach<span>LIST</span></div>
+    </div>
+
+    <nav class="nav" aria-label="Navigare principală">
+      <button onclick="showPage('intro')">Acasă</button>
+      <button onclick="showPage('roles')">Înregistrare</button>
+      <button onclick="showPage('main')">Categorii</button>
+    </nav>
+
+    <button class="theme-btn" id="themeButton" onclick="toggleTheme()">
+      Dark mode
+    </button>
+  </header>
+
+  <main>
+    <section id="intro" class="page active">
+      <div class="hero">
+        <div class="hero-logo-box">
+          <img id="heroLogo" src="logo.png" alt="TeachList" />
+        </div>
+
+        <p class="badge">Platformă pentru elevi, părinți și profesori</p>
+
+        <h1>Găsește mentorul potrivit pentru orice domeniu.</h1>
+
+        <p>
+          TeachList conectează elevii cu profesori și mentori pentru matematică,
+          română, engleză, limbi străine, programare și alte obiecte.
+        </p>
+
+        <div class="hero-buttons">
+          <button class="btn primary" onclick="showPage('roles')">Începe acum</button>
+          <button class="btn secondary" onclick="showPage('main')">Vezi domenii</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="roles" class="page">
+      <div class="section-title">
+        <p class="badge">Alege rolul</p>
+        <h2>Cum vrei să folosești TeachList?</h2>
+      </div>
+
+      <div class="role-grid">
+        <button class="role-card" onclick="showPage('teacherForm')">
+          <h3>Sunt profesor</h3>
+          <p>Creez profil, adaug calificări, cursuri și orașul meu.</p>
+        </button>
+
+        <button class="role-card" onclick="showPage('studentForm')">
+          <h3>Sunt elev</h3>
+          <p>Caut mentori și rezerv lecții online sau fizic.</p>
+        </button>
+
+        <button class="role-card" onclick="showPage('parentForm')">
+          <h3>Sunt părinte</h3>
+          <p>Conectez contul copilului și urmăresc activitatea acceptată.</p>
+        </button>
+      </div>
+    </section>
+
+    <section id="teacherForm" class="page">
+      <div class="form-page">
+        <div>
+          <p class="badge">Profil profesor</p>
+          <h2>Completează informațiile tale</h2>
+
+          <p>
+            Aceste date vor apărea pe profilul tău de mentor.
+            Calificările pot fi încărcate ca poză sau document.
+          </p>
+        </div>
+
+        <form class="form-card" id="teacherProfileForm" data-profile-type="teacher">
+          <input name="fullName" type="text" placeholder="Nume și prenume" required />
+          <input name="email" type="email" placeholder="Gmail / Email" required />
+
+          <label for="mentorDomain">Alege domeniul</label>
+          <select id="mentorDomain" name="domain" onchange="checkOtherDomain()" required>
+            <option value="">Selectează domeniul</option>
+            <option>Matematică</option>
+            <option>Limba română</option>
+            <option>Engleză</option>
+            <option>Limbi străine</option>
+            <option>Programare</option>
+            <option>Fizică</option>
+            <option>Chimie</option>
+            <option>Istorie</option>
+            <option>Biologie</option>
+            <option>Geografie</option>
+            <option>Informatică</option>
+            <option>Economie</option>
+            <option>Muzică</option>
+            <option>Desen</option>
+            <option value="alt">Alt domeniu</option>
+          </select>
+
+          <div id="newDomainBox" class="hidden">
+            <input id="newDomainInput" type="text" placeholder="Scrie domeniul nou" />
+
+            <button class="btn secondary" type="button" onclick="addMentorDomain()">
+              Adaugă domeniu
+            </button>
+          </div>
+
+          <input name="courses" type="text" placeholder="Cursuri predate: BAC, HTML, IELTS..." required />
+          <input name="qualification" type="text" placeholder="Calificare: profesor licențiat, student, specialist..." required />
+          <input name="university" type="text" placeholder="Facultatea / Universitatea" required />
+          <input name="experience" type="text" placeholder="Experiență: 2 ani, 5 ani..." />
+          <input name="city" type="text" placeholder="Oraș" required />
+
+          <label class="file-box">
+            <span>Încarcă poza calificărilor / diplomei</span>
+            <input name="diploma" type="file" accept="image/*,.pdf" capture="environment" />
+          </label>
+
+          <select name="lessonFormat" required>
+            <option value="">Format lecții</option>
+            <option>Online</option>
+            <option>Fizic</option>
+            <option>Online + Fizic</option>
+          </select>
+
+          <button class="btn primary" type="submit">
+            Creează profil profesor
+          </button>
+        </form>
+      </div>
+    </section>
+
+    <section id="studentForm" class="page">
+      <div class="form-page">
+        <div>
+          <p class="badge">Profil elev</p>
+          <h2>Completează datele elevului</h2>
+
+          <p>
+            Elevul va putea căuta mentori, scrie mesaje și rezerva lecții.
+          </p>
+        </div>
+
+        <form class="form-card" id="studentProfileForm" data-profile-type="student">
+          <input name="lastName" type="text" placeholder="Nume" required />
+          <input name="firstName" type="text" placeholder="Prenume" required />
+          <input name="email" type="email" placeholder="Gmail / Email" required />
+          <input name="grade" type="text" placeholder="Clasa: 7, 9, 12..." required />
+          <input name="city" type="text" placeholder="Oraș" required />
+
+          <button class="btn primary" type="submit">
+            Creează profil elev
+          </button>
+        </form>
+      </div>
+    </section>
+
+    <section id="parentForm" class="page">
+      <div class="form-page">
+        <div>
+          <p class="badge">Profil părinte</p>
+          <h2>Conectează contul copilului</h2>
+
+          <p>
+            Părintele introduce loginul și emailul elevului. Elevul primește un cod
+            și acceptă ca părintele să vadă activitatea sa.
+          </p>
+        </div>
+
+        <form class="form-card" id="parentProfileForm" data-profile-type="parent">
+          <input name="lastName" type="text" placeholder="Nume părinte" required />
+          <input name="firstName" type="text" placeholder="Prenume părinte" required />
+          <input id="studentLogin" name="studentLogin" type="text" placeholder="Login elev" required />
+          <input id="studentEmail" name="studentEmail" type="email" placeholder="Email elev" required />
+
+          <button class="btn primary" type="button" onclick="generateCode()">
+            Trimite cod elevului
+          </button>
+
+          <div id="codeBox" class="code-box">
+            Codul va apărea aici pentru demo.
+          </div>
+
+          <input id="confirmCode" name="confirmCode" type="text" placeholder="Cod introdus de elev" />
+
+          <label class="checkbox">
+            <input type="checkbox" id="studentAccept" name="studentAccept" />
+            Elevul confirmă că acesta este părintele său
+          </label>
+
+          <button class="btn primary" type="submit">
+            Confirmă conectarea
+          </button>
+        </form>
+      </div>
+    </section>
+
+    <section id="main" class="page">
+      <div class="section-title">
+        <p class="badge">Pagina principală</p>
+        <h2>Alege domeniul în care ai nevoie de ajutor</h2>
+      </div>
+
+      <div class="search-area">
+        <input id="searchInput" type="text" placeholder="Caută domeniu sau mentor..." />
+        <button class="btn primary" type="button" onclick="filterCategories()">Caută</button>
+      </div>
+
+      <div class="add-category-box">
+        <h3>Adaugă o categorie nouă</h3>
+        <p>Dacă domeniul tău nu există, îl poți adăuga în sistem.</p>
+
+        <div class="add-category-form">
+          <input id="newCategoryInput" type="text" placeholder="Ex: Robotică, Dans, Psihologie..." />
+
+          <button class="btn secondary" type="button" onclick="addCategory()">
+            Adaugă categorie
+          </button>
+        </div>
+      </div>
+
+      <div class="category-grid" id="categoryGrid">
+        <div class="category-card">Matematică</div>
+        <div class="category-card">Limba română</div>
+        <div class="category-card">Engleză</div>
+        <div class="category-card">Limbi străine</div>
+        <div class="category-card">Programare</div>
+        <div class="category-card">Fizică</div>
+        <div class="category-card">Chimie</div>
+        <div class="category-card">Istorie</div>
+        <div class="category-card">Biologie</div>
+        <div class="category-card">Geografie</div>
+        <div class="category-card">Informatică</div>
+        <div class="category-card">Economie</div>
+        <div class="category-card">Muzică</div>
+        <div class="category-card">Desen</div>
+      </div>
+
+      <div class="empty-box" id="profilesBox">
+        <h3>Mentorii vor apărea aici</h3>
+
+        <p>
+          Nu adăugăm profesori inventați. Tu vei adăuga profesorii reali,
+          iar noi le facem carduri detaliate.
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
